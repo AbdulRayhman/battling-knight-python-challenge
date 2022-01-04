@@ -1,6 +1,8 @@
 from pathlib import Path
 from json import dumps
 from board import ArenaBoard
+from item import Item
+from position import Pos
 
 
 class Game:
@@ -12,7 +14,7 @@ class Game:
         self._arena.renderArenaBoard()
 
     def readMoveFromFile(self):
-        movesData = Path('./movements.txt').read_text()
+        movesData = Path('./moves2.txt').read_text()
         moves = movesData.strip().split('\n')
         moves.pop(0)
         moves.pop(moves.__len__()-1)
@@ -24,14 +26,14 @@ class Game:
     def writeToFile(self, data):
         Path('./result.json').write_text(dumps(data))
 
-    def getFormattedPosition(self, p):
+    def getFormattedPosition(self, p: Pos):
         return p.to_json() if p else None
 
-    def itemHaveKnight(self, item):
+    def itemHaveKnight(self, item: Item):
         itemPos = item.pos
         return True if itemPos.knight else False
 
-    def getItemData(self, item):
+    def getItemData(self, item: Item):
         return None if item == None else item.name
 
     def finalResult(self):

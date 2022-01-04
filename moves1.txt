@@ -1,0 +1,16 @@
+GAME-START
+Y:N
+R:N
+B:E
+B:E
+B:N
+B:N
+G:G
+B:S
+B:S
+B:E
+B:E
+B:E
+B:E
+B:E
+GAME-END

@@ -14,5 +14,19 @@ class Knight:
     base_attack: int = 1
     base_defence: int = 1
 
+    def getAttackScore(self):
+        if self.item:
+            self.base_attack += self.item.attack
+            return self.base_attack
+        else:
+            return self.base_attack
+
+    def getDefenceScore(self):
+        if self.item:
+            self.base_defence += self.item.defence
+            return self.base_defence
+        else:
+            return self.base_defence
+
     def update_status(self, idx):
         self.status = STATUS_OPTS[idx]

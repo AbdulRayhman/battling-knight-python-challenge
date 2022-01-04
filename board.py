@@ -65,32 +65,18 @@ class ArenaBoard:
                     print('  ', end='')
             print('')
         print('')
-    
-    
 
-    def Attacking( self, attacker, defendant, addSurprise):
-
-        attack_score = (attacker.base_attack + 0.5) if addSurprise else (attacker.base_attack +0)
-        defend_score = defendant.base_defence
-
-        if attacker.item:
-            attack_score += attacker.item.attack
-
-        if defendant.item:
-            defend_score += defendant.item.defence
-
+    def Attacking(self, attacker: Knight, defendant: Knight, addSurprise: bool):
+        attack_score = (attacker.getAttackScore() +
+                        0.5) if addSurprise else attacker.getAttackScore()
+        defend_score = defendant.getDefenceScore()
         if attack_score > defend_score:
-            attacker.base_attack = attack_score
-            defendant.base_defence = defend_score
             return (attacker, defendant)
         else:
-            attacker.base_attack = attack_score
-            defendant.base_defence = defend_score
             return (defendant, attacker)
-        
 
     @staticmethod
-    def killTheKnight(_kn, livingStatus=1):
+    def killTheKnight(_kn: Knight, livingStatus=1):
         knightLoot = _kn.item
         knightLastPos = _kn.pos
         _kn.update_status(livingStatus)
@@ -100,7 +86,7 @@ class ArenaBoard:
         _kn.base_defence = 0
         return (knightLoot, knightLastPos)
 
-    def moveKnightInArenaBoard(self, knight, move):
+    def moveKnightInArenaBoard(self, knight: Knight, move: str):
         tempKnight = getattr(self, knight)
         if tempKnight.status == 'DROWNED':
             print("DROWNED")
@@ -115,13 +101,12 @@ class ArenaBoard:
                     print('The Loot dropped: ', loot)
 
             else:
-                # print('ELSE HERE', tempPos)
-
                 if tempPos.knight is not None:
                     attacker = tempKnight
                     defender = tempPos.knight
                     haveKnight = True if defender != None else False
-                    winner, loser = self.Attacking(attacker, defender, haveKnight)
+                    winner, loser = self.Attacking(
+                        attacker, defender, haveKnight)
                     self.movingThePosition(winner, tempPos)
                     loot, last_pos = self.killTheKnight(loser)
 
@@ -145,20 +130,20 @@ class ArenaBoard:
 
                 return tempKnight
 
-    def dropWeaponsLoot(self, item, pos):
+    def dropWeaponsLoot(self, item: Item, pos: Pos):
         if item:
             item.pos = pos
             pos.items.append(item)
             pos.items.sort(key=attrgetter('power'))
             return True
 
-    def movingThePosition(self, _kn, pos):
+    def movingThePosition(self, _kn: Knight, pos: Pos):
         pos.knight = _kn
         _kn.pos = pos
         if _kn.item:
             _kn.item.pos = pos
 
-    def makeAMove(self, move, movingKnight: Pos):
+    def makeAMove(self, move: str, movingKnight: Pos):
         knightOldPos = movingKnight
         makeCoordinates = {
             'N': (knightOldPos.y-1, knightOldPos.x),
@@ -166,11 +151,13 @@ class ArenaBoard:
             'S': (knightOldPos.y+1, knightOldPos.x),
             'W': (knightOldPos.y, knightOldPos.x-1),
         }
-
-        if makeCoordinates[move][0] < 0 or makeCoordinates[move][0] > 7 or makeCoordinates[move][1] < 0 or makeCoordinates[move][1] > 7:
-            raise Drowned
-        else:
-            return self.arenaBoard[makeCoordinates[move][0]][makeCoordinates[move][1]]
+        try:
+            if makeCoordinates[move][0] < 0 or makeCoordinates[move][0] > 7 or makeCoordinates[move][1] < 0 or makeCoordinates[move][1] > 7:
+                raise Drowned
+            else:
+                return self.arenaBoard[makeCoordinates[move][0]][makeCoordinates[move][1]]
+        except KeyError:
+            return self.arenaBoard[knightOldPos.y][knightOldPos.x]
 
     def getFinalResult(self):
         return self.arenaBoard
