@@ -16,15 +16,13 @@ class Knight:
 
     def getAttackScore(self):
         if self.item:
-            self.base_attack += self.item.attack
-            return self.base_attack
+            return self.base_attack + self.item.attack
         else:
             return self.base_attack
 
     def getDefenceScore(self):
         if self.item:
-            self.base_defence += self.item.defence
-            return self.base_defence
+            return self.base_defence + self.item.defence
         else:
             return self.base_defence
 
