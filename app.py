@@ -14,7 +14,7 @@ class Game:
         self._arena.renderArenaBoard()
 
     def readMoveFromFile(self):
-        movesData = Path('./moves3.txt').read_text()
+        movesData = Path('./moves.txt').read_text()
         moves = movesData.strip().split('\n')
         moves.pop(0)
         moves.pop(moves.__len__()-1)
