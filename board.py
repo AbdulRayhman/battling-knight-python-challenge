@@ -125,7 +125,18 @@ class ArenaBoard:
                     self.movingThePosition(tempKnight, tempPos)
                     tempPos.items.sort(key=attrgetter('power'))
                     if not tempKnight.item:
-                        tempKnight.item = tempPos.items.pop()
+                        popedItem = tempPos.items.pop()
+                        if popedItem.name == 'Magic' and (tempKnight.name == 'R' or tempKnight.name == 'B'):
+                            print(f'{tempKnight.clr} PICK the Magic')
+                            tempKnight.item = popedItem
+                        elif popedItem.name == 'Magic' and (tempKnight.name == 'G' or tempKnight.name == 'Y'):
+                            print(f'Else IF=> {tempKnight.clr}')
+                            tempPos.items.append(popedItem)
+                            tempKnight.item = None
+                        else:
+                            tempKnight.item = popedItem
+
+
                         print(' knight equipment Acquired ', tempKnight.item)
 
                 return tempKnight

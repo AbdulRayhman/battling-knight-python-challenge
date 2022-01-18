@@ -52,7 +52,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(self._arena.Y.status, 'LIVE')
 
     def testBattlingAndPositions(self):
-        
+
         self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
         self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
         self._arena.moveKnightInArenaBoard(self._arena.R.name, 'E')
@@ -72,7 +72,6 @@ class TestCase(unittest.TestCase):
         self.assertEqual(self._arena.R.status, 'LIVE')
         self.assertEqual(self._arena.B.status, 'LIVE')
         self.assertEqual(self._arena.Y.status, 'DEAD')
-        
 
     def testAttackAndDefenceScore(self):
         self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
@@ -87,8 +86,8 @@ class TestCase(unittest.TestCase):
         self._arena.moveKnightInArenaBoard(self._arena.R.name, 'N')
         self._arena.moveKnightInArenaBoard(self._arena.R.name, 'N')
         self._arena.moveKnightInArenaBoard(self._arena.G.name, 'E')
-        
-        self.assertEqual(self._arena.R.base_attack, 3.5)
+
+        self.assertEqual(self._arena.R.base_attack, 1)
         self.assertEqual(self._arena.R.base_defence, 1)
         self.assertEqual(self._arena.Y.base_attack, 0)
         self.assertEqual(self._arena.Y.base_defence, 0)
@@ -97,35 +96,57 @@ class TestCase(unittest.TestCase):
         self.assertEqual(self._arena.B.base_attack, 1)
         self.assertEqual(self._arena.B.base_defence, 1)
 
-    def testAttacking(self):        
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'S')
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'S')
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'E')
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'E')
-        self._arena.moveKnightInArenaBoard (self._arena.B.name,'E')
-        self._arena.moveKnightInArenaBoard (self._arena.B.name,'E')
-        self._arena.moveKnightInArenaBoard (self._arena.B.name,'N')
-        self._arena.moveKnightInArenaBoard (self._arena.B.name,'N')
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'S')
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'S')
-        self._arena.moveKnightInArenaBoard (self._arena.R.name,'S')
-        
+    def testAttacking(self):
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'E')
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'E')
+        self._arena.moveKnightInArenaBoard(self._arena.B.name, 'E')
+        self._arena.moveKnightInArenaBoard(self._arena.B.name, 'E')
+        self._arena.moveKnightInArenaBoard(self._arena.B.name, 'N')
+        self._arena.moveKnightInArenaBoard(self._arena.B.name, 'N')
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
+        self._arena.moveKnightInArenaBoard(self._arena.R.name, 'S')
+
         self.assertEqual(self._arena.R.status, 'LIVE')
-        self.assertEqual(self._arena.B.status, 'DEAD')        
-        self.assertEqual(self._arena.R.base_attack, 3.5)
+        self.assertEqual(self._arena.B.status, 'DEAD')
+        self.assertEqual(self._arena.R.base_attack, 1)
         self.assertEqual(self._arena.R.base_defence, 1)
         self.assertEqual(self._arena.B.base_attack, 0)
         self.assertEqual(self._arena.B.base_defence, 0)
 
     def testKillingKnight(self):
-        self._arena.killTheKnight (self._arena.G, 1)
-        self.assertEqual(self._arena.G.status, 'DEAD') 
+        self._arena.killTheKnight(self._arena.G, 1)
+        self.assertEqual(self._arena.G.status, 'DEAD')
         self.assertEqual(self._arena.G.base_attack, 0)
         self.assertEqual(self._arena.G.base_defence, 0)
         self.assertEqual(self._arena.G.item, None)
-        self.assertEqual(self._arena.G.pos.to_json(), [7,7])
-        
-        
+        self.assertEqual(self._arena.G.pos.to_json(), [7, 7])
+
+    def testGreenNotAbleToPickMagic(self):
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'N')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'N')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'N')
+
+        self.assertEqual(self._arena.G.item, None)
+
+    def testBlueAbleToPickMagic(self):
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'W')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'N')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'N')
+        self._arena.moveKnightInArenaBoard(self._arena.G.name, 'N')
+
+        self.assertEqual(self._arena.G.item, None)
 
 if __name__ == '__main__':
     unittest.main(verbosity=5)
